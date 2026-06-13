@@ -3,16 +3,36 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class EndpointActions {
     private String tasks;
     private Integer new_id = 0;
+    private final String json_file = "database.json";
     ArrayList<HashMap> temp_database = new ArrayList<>();
 
     public EndpointActions(){
-       
+       createFileIfNotExist();
+
     }
 
+    private void createFileIfNotExist(){
+        File file = new File(json_file);
+
+        if(!file.exists()){
+            try{
+                file.createNewFile();
+
+                FileWriter writer = new FileWriter(file);
+                writer.write("[]");
+                writer.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
     // public 
     public ArrayList<HashMap> getArrayList(){
         return temp_database;
