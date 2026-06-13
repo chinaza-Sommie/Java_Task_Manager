@@ -2,12 +2,12 @@
     // A user comes on the and is prompted with the operations to add data
     // METHODS ALGORITHM
     // Accept Input is processed my the EndpointActions class
-    // if operation Add then process add method
-    // if operation update then process update method
-    // if operation delete then process delete method
+    //DONE if operation Add then process add method
+    //DONE if operation update then process update method
+    //DONE if operation delete then process delete method
     // if operation mark-in-progress then process mark-in-progress method
     // if operation mark-done then process mark-done method
-    // if operation list then process list method
+    //DONE  if operation list then process list method
     // if operation list done then process listDone method
     // if operation list todo then process listTodo method
     // if operation list in-progress then process list in-progress method
@@ -23,5 +23,5 @@
     // DATASTRUCTURE FOR THE STORAGE
     // HashMap
 
-    
+
 
