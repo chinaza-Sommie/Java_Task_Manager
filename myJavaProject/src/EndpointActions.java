@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class EndpointActions {
     private String tasks;
@@ -14,8 +16,8 @@ public class EndpointActions {
     ArrayList<HashMap> temp_database = new ArrayList<>();
 
     public EndpointActions(){
-       createFileIfNotExist();
-
+        createFileIfNotExist();
+        loadTasks();
     }
 
     private void createFileIfNotExist(){
@@ -33,12 +35,63 @@ public class EndpointActions {
             }
         }
     }
-    // public 
+
+    private void saveTasks(){
+        try{
+            FileWriter writer = new FileWriter(json_file);
+
+            writer.write("[\n");
+
+            for(int i = 0; i < temp_database.size(); i++){
+                HashMap<String, String> task = temp_database.get(i);
+
+                writer.write(" {\n");
+                writer.write("   \"id\": \"" + task.get("id") + "\",\n");
+                writer.write("    \"description\": \"" +
+                    task.get("description") + "\",\n");
+                writer.write("    \"status\": \"" +
+                    task.get("status") + "\",\n");
+                writer.write("    \"createdAt\": \"" +
+                    task.get("createdAt") + "\",\n");
+                writer.write("    \"updatedAt\": \"" +
+                    task.get("updatedAt") + "\"\n");
+                writer.write(" }");
+
+                if(i < temp_database.size() - 1){
+                    writer.write(",");
+                }
+
+                writer.write("\n");
+            }
+            writer.write("]");
+            writer.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+   
+
     public ArrayList<HashMap> getArrayList(){
         return temp_database;
     }
 
-    // public HashMap<String, String> addData(String task){
+    private void loadTasks() {
+
+        try {
+
+            String content = Files.readString(Paths.get(json_file));
+
+            if (content.equals("[]")) {
+                return;
+            }
+
+            parseJson(content);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String addData(String task){
         if(task.isEmpty()){
             // return false;
@@ -55,16 +108,55 @@ public class EndpointActions {
         curr_taskSet.put("updatedAt" , "1");
 
         temp_database.add(curr_taskSet);
-
+        saveTasks();
         return curr_taskSet.get("id");
     }
 
-    // public void displayTasks(){
-    //     ArrayList<HashMap> taskArray = getArrayList();
-    //         for(HashMap task : taskArray){
-    //             System.out.println(task);
-    //     }
-    // }
+    private void parseJson(String json) {
+
+        json = json.trim();
+
+        json = json.substring(1, json.length() - 1);
+
+        if (json.isBlank()) {
+            return;
+        }
+
+        String[] objects = json.split("\\},\\s*\\{");
+
+        for (String object : objects) {
+
+            object = object.replace("{", "");
+            object = object.replace("}", "");
+
+            LinkedHashMap<String, String> task = new LinkedHashMap<>();
+
+            String[] pairs = object.split(",");
+
+            for (String pair : pairs) {
+
+                String[] keyValue = pair.split(":");
+
+                String key = keyValue[0]
+                        .replace("\"", "")
+                        .trim();
+
+                String value = keyValue[1]
+                        .replace("\"", "")
+                        .trim();
+
+                task.put(key, value);
+            }
+
+            temp_database.add(task);
+
+            int id = Integer.parseInt(task.get("id"));
+
+            if (id > new_id) {
+                new_id = id;
+            }
+        }
+    }
 
     public String getInput(String operation){
         Scanner scanned_taskDescription = new Scanner(System.in);
@@ -99,6 +191,7 @@ public class EndpointActions {
             if(task.get("id").equals(taskID)){
                 iterator.remove();
                 System.out.println("Task deleted successfully (ID: " + taskID + " )");
+                saveTasks();
                 return temp_database;
             }
         }
@@ -116,6 +209,7 @@ public class EndpointActions {
         for(HashMap tasks : temp_database){
             if(tasks.get("id").equals(taskID)){
                 tasks.put("description" , task);
+                saveTasks();
                 System.out.println("Task updated successfully");
                 return "Task updated successfully";
             }
@@ -143,6 +237,7 @@ public class EndpointActions {
         for(HashMap tasks : temp_database){
             if(tasks.get("id").equals(taskID)){
                 tasks.put("status", setStatus);
+                saveTasks();
                 return "Status Updated Successfully";
             }
         }
