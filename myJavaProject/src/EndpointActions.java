@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class EndpointActions {
     private String tasks;
@@ -70,6 +72,12 @@ public class EndpointActions {
         }
     }
    
+    private String getDateTime(){
+        LocalDateTime createdAt = LocalDateTime.now();
+        DateTimeFormatter formattedCreatedAt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDateTime = createdAt.format(formattedCreatedAt);
+        return formattedDateTime;
+    }
 
     public ArrayList<HashMap> getArrayList(){
         return temp_database;
@@ -100,12 +108,12 @@ public class EndpointActions {
 
         String default_status = "todo";
         new_id+=1;
-
+        String formattedDateTime = getDateTime();
         curr_taskSet.put("id" , new_id.toString());
         curr_taskSet.put("description" , task);
         curr_taskSet.put("status" , default_status);
-        curr_taskSet.put("createdAt" , "1");
-        curr_taskSet.put("updatedAt" , "1");
+        curr_taskSet.put("createdAt" , formattedDateTime);
+        curr_taskSet.put("updatedAt" , "00-00-0000");
 
         temp_database.add(curr_taskSet);
         saveTasks();
@@ -205,10 +213,12 @@ public class EndpointActions {
         if(task.isEmpty() || taskID.isEmpty()){
             return "Please, enter task to update";
         }
+        String formattedDateTime = getDateTime();
 
         for(HashMap tasks : temp_database){
             if(tasks.get("id").equals(taskID)){
                 tasks.put("description" , task);
+                tasks.put("updatedAt" , formattedDateTime);
                 saveTasks();
                 System.out.println("Task updated successfully");
                 return "Task updated successfully";
