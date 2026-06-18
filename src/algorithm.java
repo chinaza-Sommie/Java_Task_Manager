@@ -88,3 +88,36 @@
 
 
 
+// I recently started working with Java again as part of a Full Stack Engineering program I was accepted into. 🥳 
+
+// To accelerate my learning and build confidence with the language, I challenged myself to build one Java project every week. The projects are inspired by the roadmap.sh project list.
+
+// Last week, I built a CLI Task Tracker application that allows users to:
+// ✅ Add tasks
+// ✅ Update tasks
+// ✅ Delete tasks
+// ✅ Mark tasks as in progress or completed
+// ✅ Persist data in a JSON file
+
+// The project came with a few constraints:
+// • No external libraries or frameworks
+// • Data had to be stored in a JSON file
+
+// One interesting thing I discovered during this project is that Java, itself, doesn't provide built-in support for working with JSON. Most common solutions involve external libraries such as Jackson or Gson (often managed with Maven or Gradle).
+
+// Since external libraries were off-limits for this project, I had to manually construct and parse JSON strings to store and retrieve data from the file.
+
+// While this approach wouldn't scale well for large or complex applications, it taught me a lot about:
+// - File handling in Java
+// - Data serialization concepts
+// - Making trade-offs based on project requirements
+// - Solving problems within constraints
+
+// It's a reminder that sometimes the value of a project isn't just in the final product, but in the lessons learned while building it.
+
+// You can check out the project here:
+// https://github.com/chinaza-Sommie/Java_Task_Manager
+
+// PS: The project is still evolving and being optimised regularly. The bugs you see today, you shall see them no more. 😅
+
+// #Java #SoftwareEngineering #BackendDevelopment #FullStackDevelopment #Programming #RoadmapSH #BuildInPublic #LearningInPublic
