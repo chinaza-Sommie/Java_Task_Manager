@@ -170,7 +170,7 @@ public class EndpointActions {
         Scanner scanned_taskDescription = new Scanner(System.in);
 
         if(operation == null || operation.isEmpty()){
-            System.out.println("Enter the Operation Name: ");
+            System.out.println("Enter the Operation Name : ");
         }else if(operation.equalsIgnoreCase("delete")){
             System.out.println("Enter the task ID to delete: ");
         }else if(operation.equalsIgnoreCase("add")){
